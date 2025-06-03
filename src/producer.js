@@ -5,7 +5,8 @@ dotenv.config()
 const AMQP_URL = 'amqp://' + process.env.RABBITMQ_URL
 const EXCHANGE = 'calculation_operations'
 
-const OPERATIONS = ['add', 'sub', 'mul', 'div']
+const OPERATIONS = ['add', 'sub', 'mul', 'div', 'all']
+const ROUTING_KEYS = ['calc.add', 'calc.sub', 'calc.mul', 'calc.div']
 
 async function produce() {
     let index = 0
@@ -22,10 +23,16 @@ async function produce() {
         const message = JSON.stringify({ index, firstNumber, secondNumber, operation })
         index++
 
-        const topicKey = `calc.${operation}`
-        channel.publish(EXCHANGE, topicKey, Buffer.from(message))
-
-        console.log(`Message envoyé : ${message}`)
+        if (operation === 'all') {
+            ROUTING_KEYS.forEach(routingKey => {
+                channel.publish(EXCHANGE, routingKey, Buffer.from(message))
+            })
+            console.log(`Message envoyé (all) : ${message} -> ${ROUTING_KEYS.join(', ')}`)
+        } else {
+            const topicKey = `calc.${operation}`
+            channel.publish(EXCHANGE, topicKey, Buffer.from(message))
+            console.log(`Message envoyé : ${message}`)
+        }
     }, Math.floor(Math.random() * 1000) + 500)
 }
 
