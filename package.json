@@ -15,9 +15,9 @@
         "type": "module",
         "main": " ",
         "scripts": {
-                "start-consumer": "node src/consumer.js",
-                "start-producer": "node src/producer.js",
-                "start-worker": "node src/worker.js",
+                "start:consumer": "node src/consumer.js",
+                "start:producer": "node src/producer.js",
+                "start:worker": "node src/worker.js",
                 "start:all": "concurrently -k -n worker-add,worker-sub,worker-mul,worker-div,consumer -c green,blue,magenta,cyan,yellow \"node src/worker.js add\" \"node src/worker.js sub\" \"node src/worker.js mul\" \"node src/worker.js div\" \"node src/consumer.js\""
         },
         "dependencies": {
