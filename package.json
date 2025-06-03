@@ -15,10 +15,16 @@
         "type": "module",
         "main": " ",
         "scripts": {
-                "test": "echo \"Error: no test specified\" && exit 1"
+                "start-consumer": "node src/consumer.js",
+                "start-producer": "node src/producer.js",
+                "start-worker": "node src/worker.js",
+                "start:all": "concurrently -k -n worker-add,worker-sub,worker-mul,worker-div,consumer -c green,blue,magenta,cyan,yellow \"node src/worker.js add\" \"node src/worker.js sub\" \"node src/worker.js mul\" \"node src/worker.js div\" \"node src/consumer.js\""
         },
         "dependencies": {
                 "amqplib": "^0.10.8",
                 "dotenv": "^16.5.0"
+        },
+        "devDependencies": {
+                "concurrently": "^9.1.2"
         }
 }

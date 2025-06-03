@@ -21,9 +21,7 @@ function consume(message) {
     if (message !== null) {
         const result = JSON.parse(message.content.toString())
 
-        console.log('')
-        console.log(`Résultat d'opération reçu :`)
-        console.log(buildResultMessage(result))
+        console.log(`Résultat d'opération reçu : ${buildResultMessage(result)}`)
 
         channel.ack(message)
     }
