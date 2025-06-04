@@ -12,6 +12,28 @@ Ce projet est une démonstration de l'utilisation de RabbitMQ pour la gestion de
 
 ## Installation du projet
 
+1. Pour le setup automatique du projet via docker-compose, voir [la partie sur Docker Compose](#setup-via-docker-compose).
+2. Pour un setup manuel, suivez les étapes du [setup manuel](#setup-manuel).
+
+## Setup via Docker Compose
+
+1. Cloner le projet
+```bash
+git clone https://github.com/Orden14/RabbitMQ-Projet.git
+```
+
+2. Se placer dans le dossier du projet
+```bash
+cd RabbitMQ-Projet
+```
+
+3. Lancer le projet avec Docker Compose
+```bash
+docker-compose up
+```
+
+## Setup manuel
+
 1. Cloner le projet
 ```bash
 git clone https://github.com/Orden14/RabbitMQ-Projet.git

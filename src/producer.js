@@ -20,6 +20,7 @@ async function produce() {
         await handleManualMode(channel, indexRef.value++, opArg, firstArg, secondArg)
         await channel.close()
         await connection.close()
+
         return
     }
 
@@ -30,6 +31,7 @@ async function handleManualMode(channel, index, opArg, firstArg, secondArg) {
     const firstNumber = firstArg ? parseInt(firstArg, 10) : Math.floor(Math.random() * 100)
     const secondNumber = secondArg ? parseInt(secondArg, 10) : Math.floor(Math.random() * 100)
     const message = createMessage(index, firstNumber, secondNumber, opArg)
+
     await sendMessage(channel, opArg, message)
 }
 
@@ -39,8 +41,9 @@ async function handleRandomMode(channel, indexRef) {
         const secondNumber = Math.floor(Math.random() * 100)
         const operation = OPERATIONS[Math.floor(Math.random() * OPERATIONS.length)]
         const message = createMessage(indexRef.value++, firstNumber, secondNumber, operation)
+
         await sendMessage(channel, operation, message)
-    }, Math.floor(Math.random() * 1000) + 500)
+    }, Math.floor(Math.random() * 2000) + 3000)
 }
 
 function createMessage(index, firstNumber, secondNumber, operation) {

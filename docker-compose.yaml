@@ -1,0 +1,80 @@
+services:
+    rabbitmq:
+        image: rabbitmq:4-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+
+    consumer:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/consumer.js"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+    worker-add:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/worker.js add"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+    worker-sub:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/worker.js sub"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+    worker-mul:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/worker.js mul"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+    worker-div:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/worker.js div"
+        depends_on:
+            - rabbitmq
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+    producer:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: sh -c "npx wait-port rabbitmq:5672 && node src/producer.js"
+        depends_on:
+            - rabbitmq
+            - consumer
+            - worker-add
+            - worker-sub
+            - worker-mul
+            - worker-div
+        environment:
+            - RABBITMQ_URL=guest:guest@rabbitmq:5672
+
+volumes:
+    rabbitmq_data:
